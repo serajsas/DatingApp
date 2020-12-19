@@ -1,15 +1,15 @@
 package model;
 
-import java.util.Date;
 import java.util.Objects;
 
 public class UserInformation {
+    private int id;
     private String userName;
     private String Name;
     private String passWord;
     private String email;
     private String phoneNumber;
-    private Date birthDate;
+    private String birthDate;
     private RelationShip relationShip;
 
     public UserInformation(String userName, String passWord) {
@@ -38,7 +38,7 @@ public class UserInformation {
         return phoneNumber;
     }
 
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
@@ -57,5 +57,10 @@ public class UserInformation {
     @Override
     public int hashCode() {
         return Objects.hash(userName, passWord);
+    }
+
+    @Override
+    public String toString() {
+        return  userName + "," + passWord;
     }
 }

@@ -1,11 +1,12 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
 
-public class Binder implements Observer {
+import java.util.*;
+
+public class Binder implements Iterable<User>, Writable {
     private List<User> users;
 
     public Binder() {
@@ -15,42 +16,38 @@ public class Binder implements Observer {
     public void addUser(User user) {
         if (!users.contains(user)) {
             users.add(user);
+
         }
     }
 
-    private void notifyUser(User user, User liker) {
-        System.out.println(user.getUserInformation().getUserName() + " has matched with: "
-                + liker.getUserInformation().getUserName());
-    }
-
-    private void pushNotification(User liker, User likedUser) {
-        if (isMatched(liker, likedUser)) {
-            notifyUser(liker, likedUser);
-            notifyUser(likedUser, liker);
-        }
-    }
-
-    //EFFECTS: Check when a liker likes likedUser and returns true in case it's a match
-    //         Otherwise return false
-    private boolean isMatched(User liker, User likedUser) {
-        if (likedUser.isLiked(liker)) {
-            liker.match(likedUser);
-            likedUser.match(liker);
-            return true;
-        }
-        return false;
+    public boolean isEmpty() {
+        return users.isEmpty();
     }
 
 
     @Override
-    public void update(Observable o, Object arg) {
-        if (o instanceof User) {
-            User liker = (User) o;
-            User likedUser = (User) arg;
-            pushNotification(liker, likedUser);
-
-        }
+    public String toString() {
+        return "Binder: " + users;
     }
 
+    @Override
+    public Iterator<User> iterator() {
+        return users.iterator();
+    }
 
+    @Override
+    public JSONObject toJson() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("Binder", usersToJson());
+        return jsonObject;
+    }
+
+    //EFFECTS: returns tasks in this todolist to JSON array
+    private JSONArray usersToJson() {
+        JSONArray jsonArray = new JSONArray();
+        for (User user : users) {
+            jsonArray.put(user.toJson());
+        }
+        return jsonArray;
+    }
 }

@@ -14,6 +14,11 @@ public class User extends UserType implements Iterable<UserType> {
         userTypes = new ArrayList<>();
     }
 
+    public User() {
+        super(null);
+        userTypes = new ArrayList<>();
+    }
+
     //EFFECTS: Creates a user with user information and empty list of users that they like/pass
     public User(UserInformation userInformation, Observer observer) {
         super(userInformation);
@@ -21,11 +26,22 @@ public class User extends UserType implements Iterable<UserType> {
         addObserver(observer);
     }
 
-    public void removeUser(UserType userType) {
-        if (userTypes.contains(userType)) {
-            userTypes.remove(userType);
-        }
+    public boolean hasPassedBefore(User user) {
+        return userTypes.contains(user);
     }
+//    }
+//
+//    public void addUserType(UserType userType) {
+//        if (!userTypes.contains(userType)) {
+//            userTypes.add(userType);
+//        }
+//    }
+//
+//    public void removeUser(UserType userType) {
+//        if (userTypes.contains(userType)) {
+//            userTypes.remove(userType);
+//        }
+//    }
 
     //EFFECTS: pass a user
     public void pass(UserType user) {
@@ -41,7 +57,7 @@ public class User extends UserType implements Iterable<UserType> {
     }
 
     //EFFECTS: Match a user and remove it from being likedUser
-    public void match(UserType userType){
+    public void match(UserType userType) {
         UserMatch userMatch = new UserMatch(userType.getUserInformation());
         userTypes.add(userMatch);
         userTypes.remove(userType);
@@ -72,4 +88,6 @@ public class User extends UserType implements Iterable<UserType> {
     public Iterator<UserType> iterator() {
         return userTypes.iterator();
     }
+
+
 }

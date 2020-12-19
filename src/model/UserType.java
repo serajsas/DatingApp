@@ -1,9 +1,12 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.Objects;
 import java.util.Observable;
 
-public abstract class UserType extends Observable {
+public abstract class UserType extends Observable implements Writable {
     private UserInformation userInformation;
 
     public UserType(UserInformation userInformation) {
@@ -26,5 +29,12 @@ public abstract class UserType extends Observable {
     @Override
     public int hashCode() {
         return Objects.hash(userInformation);
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("User Information", userInformation);
+        return jsonObject;
     }
 }
